@@ -6,15 +6,23 @@ const App = () => {
   ]);
   const [ newName, setNewName ] = useState('');
 
+  const namesListReducer = (accumulator, currentValue) => accumulator.concat(currentValue.name);
+
   const addNewName = (event) =>{
     event.preventDefault();
     console.log('button clicked');
-    const personObject = {
-      name: newName
-    };
-    setPersons(persons.concat(personObject));
-    setNewName('');
-    console.log('new name added');
+    const namesList = persons.reduce(namesListReducer, []);
+    console.log(namesList);
+    if(namesList.includes(newName)){
+      window.alert(`${newName} is already added to phonebook`);
+    }else {
+      const personObject = {
+        name: newName
+      };
+      setPersons(persons.concat(personObject));
+      setNewName('');
+      console.log('new name added');
+    }
   };
 
   const handleNameChange = (event) =>{
