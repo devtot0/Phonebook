@@ -1,41 +1,49 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
 const App = () => {
-  const [ persons, setPersons ] = useState([
-    { name: 'Arto Hellas' }
-  ]);
-  const [ newName, setNewName ] = useState('');
+  const [persons, setPersons] = useState([{ name: "Arto Hellas", number: "000-000-000" }]);
+  const [newName, setNewName] = useState("");
+  const [newNumber, setNewNumber] = useState("");
 
-  const namesListReducer = (accumulator, currentValue) => accumulator.concat(currentValue.name);
+  const namesListReducer = (accumulator, currentValue) =>
+    accumulator.concat(currentValue.name);
 
-  const addNewName = (event) =>{
+  const addNewName = (event) => {
     event.preventDefault();
-    console.log('button clicked');
+
     const namesList = persons.reduce(namesListReducer, []);
-    console.log(namesList);
-    if(namesList.includes(newName)){
+
+    if (namesList.includes(newName)) {
       window.alert(`${newName} is already added to phonebook`);
-    }else {
+    } else {
       const personObject = {
-        name: newName
+        name: newName,
+        number: newNumber
       };
+
       setPersons(persons.concat(personObject));
-      setNewName('');
-      console.log('new name added');
+      setNewName("");
+      setNewNumber("");
     }
   };
 
-  const handleNameChange = (event) =>{
-    console.log(event.target.value);
+  const handleNameChange = (event) => 
     setNewName(event.target.value);
-  };
+
+
+  const handleNumberChange = (event) =>
+    setNewNumber(event.target.value);
+
 
   return (
     <div>
       <h2>Phonebook</h2>
       <form onSubmit={addNewName}>
         <div>
-          name: <input value={newName} onChange={handleNameChange}/>
+          name: <input value={newName} onChange={handleNameChange} />
+        </div>
+        <div>
+          number: <input value={newNumber} onChange={handleNumberChange} />
         </div>
         <div>
           <button type="submit">add</button>
@@ -43,9 +51,11 @@ const App = () => {
       </form>
       <h2>Numbers</h2>
       <div>debug: {newName}</div>
-      {persons.map((person) => <div>{person.name}</div>)}
+      {persons.map((person) => (
+        <div>{person.name} {person.number}</div>
+      ))}
     </div>
-  )
-}
+  );
+};
 
 export default App;
