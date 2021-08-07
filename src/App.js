@@ -35,7 +35,7 @@ const App = () => {
       </form>
       <h2>Numbers</h2>
       <div>debug: {newName}</div>
-      ...
+      {persons.map((person) => <div>{person.name}</div>)}
     </div>
   )
 }
