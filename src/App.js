@@ -1,4 +1,7 @@
 import React, { useState } from "react";
+import Filter from "./components/Filter";
+import Form from "./components/Form";
+import Persons from "./components/Persons";
 
 const App = () => {
   const [persons, setPersons] = useState([
@@ -9,6 +12,7 @@ const App = () => {
   ]);
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
+  const [nameFilter, setNameFilter] = useState("");
 
   const namesListReducer = (accumulator, currentValue) =>
     accumulator.concat(currentValue.name);
@@ -24,6 +28,7 @@ const App = () => {
       const personObject = {
         name: newName,
         number: newNumber,
+        id: persons.length + 1,
       };
 
       setPersons(persons.concat(personObject));
@@ -36,27 +41,23 @@ const App = () => {
 
   const handleNumberChange = (event) => setNewNumber(event.target.value);
 
+  const handleNameFiltering = (event) => setNameFilter(event.target.value);
+
   return (
     <div>
       <h2>Phonebook</h2>
-      <form onSubmit={addNewName}>
-        <div>
-          name: <input value={newName} onChange={handleNameChange} />
-        </div>
-        <div>
-          number: <input value={newNumber} onChange={handleNumberChange} />
-        </div>
-        <div>
-          <button type="submit">add</button>
-        </div>
-      </form>
+      <Filter value={nameFilter} onChange={handleNameFiltering} />
+      <Form
+        onSubmit={addNewName}
+        nameValue={newName}
+        numberValue={newNumber}
+        onChangeName={handleNameChange}
+        onChangeNumber={handleNumberChange}
+      />
+
       <h2>Numbers</h2>
       <div>debug: {newName}</div>
-      {persons.map((person) => (
-        <div>
-          {person.name} {person.number}
-        </div>
-      ))}
+      <Persons personList={persons} nameFilter={nameFilter} />
     </div>
   );
 };
