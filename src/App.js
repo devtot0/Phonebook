@@ -9,6 +9,7 @@ const App = () => {
   ]);
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
+  const [nameFilter, setNameFilter] = useState("");
 
   const namesListReducer = (accumulator, currentValue) =>
     accumulator.concat(currentValue.name);
@@ -24,6 +25,7 @@ const App = () => {
       const personObject = {
         name: newName,
         number: newNumber,
+        id: persons.length + 1
       };
 
       setPersons(persons.concat(personObject));
@@ -36,9 +38,14 @@ const App = () => {
 
   const handleNumberChange = (event) => setNewNumber(event.target.value);
 
+  const handleNameFiltering = (event) => setNameFilter(event.target.value);
+
   return (
     <div>
       <h2>Phonebook</h2>
+      <div>
+        filter shown with <input value={nameFilter} onChange={handleNameFiltering}/>
+      </div>
       <form onSubmit={addNewName}>
         <div>
           name: <input value={newName} onChange={handleNameChange} />
@@ -52,7 +59,7 @@ const App = () => {
       </form>
       <h2>Numbers</h2>
       <div>debug: {newName}</div>
-      {persons.map((person) => (
+      {persons.filter((person) => person.name.includes(nameFilter)).map((person) => (
         <div>
           {person.name} {person.number}
         </div>
