@@ -1,7 +1,12 @@
 import React, { useState } from "react";
 
 const App = () => {
-  const [persons, setPersons] = useState([{ name: "Arto Hellas", number: "000-000-000" }]);
+  const [persons, setPersons] = useState([
+    { name: "Arto Hellas", number: "000-000-000" },
+    { name: "Ada Lovelace", number: "39-44-5323523" },
+    { name: "Dan Abramov", number: "12-43-234345" },
+    { name: "Mary Poppendieck", number: "39-23-6423122" },
+  ]);
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
 
@@ -18,7 +23,7 @@ const App = () => {
     } else {
       const personObject = {
         name: newName,
-        number: newNumber
+        number: newNumber,
       };
 
       setPersons(persons.concat(personObject));
@@ -27,13 +32,9 @@ const App = () => {
     }
   };
 
-  const handleNameChange = (event) => 
-    setNewName(event.target.value);
+  const handleNameChange = (event) => setNewName(event.target.value);
 
-
-  const handleNumberChange = (event) =>
-    setNewNumber(event.target.value);
-
+  const handleNumberChange = (event) => setNewNumber(event.target.value);
 
   return (
     <div>
@@ -52,7 +53,9 @@ const App = () => {
       <h2>Numbers</h2>
       <div>debug: {newName}</div>
       {persons.map((person) => (
-        <div>{person.name} {person.number}</div>
+        <div>
+          {person.name} {person.number}
+        </div>
       ))}
     </div>
   );
