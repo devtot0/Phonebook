@@ -7,7 +7,7 @@ const Persons = ({ personList, nameFilter }) => {
       {personList
         .filter((person) => person.name.includes(nameFilter))
         .map((person) => (
-          <Person name={person.name} number={person.number} />
+          <Person key={person.id} name={person.name} number={person.number} />
         ))}
     </div>
   );
