@@ -40,6 +40,8 @@ const App = () => {
     }
   };
 
+  const removeName = () => {};
+
   const handleNameChange = (event) => setNewName(event.target.value);
 
   const handleNumberChange = (event) => setNewNumber(event.target.value);
@@ -60,7 +62,11 @@ const App = () => {
 
       <h2>Numbers</h2>
       <div>debug: {newName}</div>
-      <Persons personList={persons} nameFilter={nameFilter} />
+      <Persons
+        personList={persons}
+        nameFilter={nameFilter}
+        removeNameHandler={removeName}
+      />
     </div>
   );
 };
