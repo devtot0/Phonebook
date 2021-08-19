@@ -1,11 +1,11 @@
 import React from "react";
 
-const Person = ({name, number}) => {
-    return(
-        <div>
-            {name} {number}
-        </div>
-    )
-}
+const Person = ({ name, number, removeNameHandler }) => {
+  return (
+    <div>
+      {name} {number} <button onClick={removeNameHandler} />
+    </div>
+  );
+};
 
 export default Person;

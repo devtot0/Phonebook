@@ -2,13 +2,14 @@ import React, { useState } from "react";
 import Filter from "./components/Filter";
 import Form from "./components/Form";
 import Persons from "./components/Persons";
+import personService from "./services/persons";
 
 const App = () => {
   const [persons, setPersons] = useState([
-    { name: "Arto Hellas", number: "000-000-000","id": 1},
-    { name: "Ada Lovelace", number: "39-44-5323523","id": 2},
-    { name: "Dan Abramov", number: "12-43-234345","id": 3},
-    { name: "Mary Poppendieck", number: "39-23-6423122","id": 4 },
+    { name: "Arto Hellas", number: "000-000-000", id: 1 },
+    { name: "Ada Lovelace", number: "39-44-5323523", id: 2 },
+    { name: "Dan Abramov", number: "12-43-234345", id: 3 },
+    { name: "Mary Poppendieck", number: "39-23-6423122", id: 4 },
   ]);
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
@@ -28,14 +29,18 @@ const App = () => {
       const personObject = {
         name: newName,
         number: newNumber,
-        id: persons.length + 1,
       };
-
-      setPersons(persons.concat(personObject));
-      setNewName("");
-      setNewNumber("");
+      console.log(persons.length);
+      personService.create(personObject).then((response) => {
+        console.log(response);
+        setPersons(persons.concat(personObject));
+        setNewName("");
+        setNewNumber("");
+      });
     }
   };
+
+  const removeName = () => {};
 
   const handleNameChange = (event) => setNewName(event.target.value);
 
@@ -57,7 +62,11 @@ const App = () => {
 
       <h2>Numbers</h2>
       <div>debug: {newName}</div>
-      <Persons personList={persons} nameFilter={nameFilter} />
+      <Persons
+        personList={persons}
+        nameFilter={nameFilter}
+        removeNameHandler={removeName}
+      />
     </div>
   );
 };
