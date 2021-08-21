@@ -1,19 +1,20 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Filter from "./components/Filter";
 import Form from "./components/Form";
 import Persons from "./components/Persons";
 import personService from "./services/persons";
 
 const App = () => {
-  const [persons, setPersons] = useState([
-    { name: "Arto Hellas", number: "000-000-000", id: 1 },
-    { name: "Ada Lovelace", number: "39-44-5323523", id: 2 },
-    { name: "Dan Abramov", number: "12-43-234345", id: 3 },
-    { name: "Mary Poppendieck", number: "39-23-6423122", id: 4 },
-  ]);
+  const [persons, setPersons] = useState([]);
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
   const [nameFilter, setNameFilter] = useState("");
+
+  useEffect(() => {
+    personService.getAll().then((response) => {
+      setPersons(response.data);
+    });
+  }, []);
 
   const namesListReducer = (accumulator, currentValue) =>
     accumulator.concat(currentValue.name);
@@ -40,7 +41,23 @@ const App = () => {
     }
   };
 
-  const removeName = () => {};
+  const removeName = (id) => {
+    console.log(id);
+    const personToRemove = persons.find((person) => person.id === id);
+    if (window.confirm(`Delete ${personToRemove.name}?`)) {
+      personService
+        .remove(id)
+        .then((response) => console.log(response))
+        .catch((error) => window.alert("An error occured."));
+    }
+    console.log(persons.slice(persons.indexOf(personToRemove), 1));
+    setPersons(
+      persons.filter((person) => {
+        return person.id !== id;
+      })
+    );
+    console.log(persons);
+  };
 
   const handleNameChange = (event) => setNewName(event.target.value);
 
