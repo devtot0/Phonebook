@@ -25,16 +25,34 @@ const App = () => {
     const namesList = persons.reduce(namesListReducer, []);
 
     if (namesList.includes(newName)) {
-      window.alert(`${newName} is already added to phonebook`);
+      if (
+        window.confirm(
+          `${newName} is already added to phonebook, replace the old number with a new one?`
+        )
+      ) {
+        const personToUpdate = persons.find(
+          (person) => person.name === newName
+        );
+        console.log(personToUpdate);
+        const updatedPerson = { ...personToUpdate, number: newNumber };
+        console.log(updatedPerson);
+        personService
+          .update(personToUpdate.id, updatedPerson)
+          .then((response) => {
+            console.log(response.data);
+            setPersons(
+              persons.map((person) =>
+                person.id !== response.data.id ? person : response.data
+              )
+            );
+          });
+      }
     } else {
       const personObject = {
         name: newName,
         number: newNumber,
       };
-      console.log(persons.length);
       personService.create(personObject).then((response) => {
-        console.log(response);
-        console.log(personObject);
         personService.getAll().then((response) => setPersons(response.data));
         setNewName("");
         setNewNumber("");
@@ -43,7 +61,6 @@ const App = () => {
   };
 
   const removeName = (id) => {
-    console.log(id);
     const personToRemove = persons.find((person) => person.id === id);
     if (window.confirm(`Delete ${personToRemove.name}?`)) {
       personService
@@ -51,13 +68,11 @@ const App = () => {
         .then((response) => console.log(response))
         .catch((error) => window.alert("An error occured."));
     }
-    console.log(persons.slice(persons.indexOf(personToRemove), 1));
     setPersons(
       persons.filter((person) => {
         return person.id !== id;
       })
     );
-    console.log(persons);
   };
 
   const handleNameChange = (event) => setNewName(event.target.value);
