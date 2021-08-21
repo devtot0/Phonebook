@@ -34,7 +34,8 @@ const App = () => {
       console.log(persons.length);
       personService.create(personObject).then((response) => {
         console.log(response);
-        setPersons(persons.concat(personObject));
+        console.log(personObject);
+        personService.getAll().then((response) => setPersons(response.data));
         setNewName("");
         setNewNumber("");
       });
