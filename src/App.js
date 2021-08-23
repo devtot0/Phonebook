@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Filter from "./components/Filter";
 import Form from "./components/Form";
 import Persons from "./components/Persons";
+import SuccessNotification from "./components/SuccessNotification";
 import personService from "./services/persons";
 
 const App = () => {
@@ -9,6 +10,7 @@ const App = () => {
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
   const [nameFilter, setNameFilter] = useState("");
+  const [confirmationMessage, setConfirmationMessage] = useState(null);
 
   useEffect(() => {
     personService.getAll().then((response) => {
@@ -46,6 +48,10 @@ const App = () => {
               )
             );
           });
+        setConfirmationMessage(`Updated ${newName}`);
+        setTimeout(() => {
+          setConfirmationMessage(null);
+        }, 5000);
       }
     } else {
       const personObject = {
@@ -56,6 +62,10 @@ const App = () => {
         personService.getAll().then((response) => setPersons(response.data));
         setNewName("");
         setNewNumber("");
+        setConfirmationMessage(`Added ${newName}`);
+        setTimeout(() => {
+          setConfirmationMessage(null);
+        }, 5000);
       });
     }
   };
@@ -84,6 +94,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <SuccessNotification message={confirmationMessage} />
       <Filter value={nameFilter} onChange={handleNameFiltering} />
       <Form
         onSubmit={addNewName}
