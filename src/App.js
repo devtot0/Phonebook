@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Filter from "./components/Filter";
 import Form from "./components/Form";
 import Persons from "./components/Persons";
-import SuccessNotification from "./components/SuccessNotification";
+import Notification from "./components/Notification";
 import personService from "./services/persons";
 
 const App = () => {
@@ -11,6 +11,7 @@ const App = () => {
   const [newNumber, setNewNumber] = useState("");
   const [nameFilter, setNameFilter] = useState("");
   const [confirmationMessage, setConfirmationMessage] = useState(null);
+  const [isDeletionSuccessful, setIsDeletionSuccessful] = useState(true);
 
   useEffect(() => {
     personService.getAll().then((response) => {
@@ -47,11 +48,20 @@ const App = () => {
                 person.id !== response.data.id ? person : response.data
               )
             );
+            setConfirmationMessage(`Updated ${newName}`);
+            setTimeout(() => {
+              setConfirmationMessage(null);
+            }, 5000);
+          })
+          .catch((error) => {
+            setIsDeletionSuccessful(false);
+            setConfirmationMessage(
+              `Information for ${newName} has already been removed from the server`
+            );
+            setTimeout(() => {
+              setConfirmationMessage(null);
+            }, 5000);
           });
-        setConfirmationMessage(`Updated ${newName}`);
-        setTimeout(() => {
-          setConfirmationMessage(null);
-        }, 5000);
       }
     } else {
       const personObject = {
@@ -78,6 +88,7 @@ const App = () => {
         .then((response) => console.log(response))
         .catch((error) => window.alert("An error occured."));
     }
+    setIsDeletionSuccessful(true);
     setPersons(
       persons.filter((person) => {
         return person.id !== id;
@@ -94,7 +105,10 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      <SuccessNotification message={confirmationMessage} />
+      <Notification
+        message={confirmationMessage}
+        isSuccesful={isDeletionSuccessful}
+      />
       <Filter value={nameFilter} onChange={handleNameFiltering} />
       <Form
         onSubmit={addNewName}

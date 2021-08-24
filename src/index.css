@@ -12,9 +12,18 @@ code {
     monospace;
 }
 
+.fail {
+  color: red;
+  background-color: gray;
+  border-radius: 5%;
+  border-color: red;
+  padding: 25px;
+}
+
 .success {
   color: green;
-  background-color: grey;
+  background-color: gray;
   border-radius: 5%;
   border-color: green;
+  padding: 25px;
 }
