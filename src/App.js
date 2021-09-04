@@ -37,8 +37,10 @@ const App = () => {
           (person) => person.name === newName
         );
         console.log(personToUpdate);
+        console.log(personToUpdate.id);
         const updatedPerson = { ...personToUpdate, number: newNumber };
         console.log(updatedPerson);
+        console.log(updatedPerson.id);
         personService
           .update(personToUpdate.id, updatedPerson)
           .then((response) => {
