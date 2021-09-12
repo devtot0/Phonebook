@@ -2,6 +2,8 @@ import React from "react";
 import Person from "./Person";
 
 const Persons = ({ personList, nameFilter, removeNameHandler }) => {
+  console.log(personList, "in persons comp");
+  console.log(nameFilter);
   return (
     <div>
       {personList
